@@ -50,3 +50,26 @@ const onScroll = () => {
     : "rgba(9, 12, 17, 0.62)";
 };
 window.addEventListener("scroll", onScroll, { passive: true });
+
+document.querySelectorAll(".ca").forEach((button) => {
+  button.addEventListener("click", async () => {
+    const address = button.dataset.ca;
+    try {
+      await navigator.clipboard.writeText(address);
+    } catch {
+      const area = document.createElement("textarea");
+      area.value = address;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand("copy");
+      area.remove();
+    }
+    const label = button.querySelector("em");
+    label.textContent = "Copied";
+    button.classList.add("copied");
+    setTimeout(() => {
+      label.textContent = "Copy";
+      button.classList.remove("copied");
+    }, 1600);
+  });
+});
